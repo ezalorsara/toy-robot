@@ -3,9 +3,23 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "strict": true,
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
+    "allowJs": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/": ["src/*"]
+    }
   },
-  "lib": ["es2015"]
+  "include": [ "**/*.ts"],
+  "exclude": [
+    "node_modules/*",
+    "dist/*",
+    "src/**/*.spec.ts"
+  ]
 }
