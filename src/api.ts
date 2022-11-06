@@ -1,7 +1,7 @@
-export const NO_X_UNIT = 5;
-export const NO_Y_UNIT = 5;
+export const DEFAULT_TABLE_X_UNIT = 5;
+export const DEFAULT_TABLE_Y_UNIT = 5;
 
-export enum DIRECTION {
+export enum FACING {
   NORTH = "NORTH",
   EAST = "EAST",
   SOUTH = "SOUTH",
@@ -16,11 +16,11 @@ export enum COMMAND {
   REPORT = "REPORT",
 }
 
-type Robot = {
+export type Robot = {
   id: string;
   x: number;
   y: number;
-  direction: DIRECTION;
+  f: FACING;
 };
 
-type Robots = Robot[];
+export type Robots = Robot[];
