@@ -1,4 +1,9 @@
-import { DEFAULT_TABLE_X_UNIT, DEFAULT_TABLE_Y_UNIT, FACING } from "../api";
+import {
+  DEFAULT_TABLE_X_UNIT,
+  DEFAULT_TABLE_Y_UNIT,
+  FACING,
+  Robots,
+} from "../api";
 import { makeMove } from "../robot";
 
 describe("Command MOVE", function () {
@@ -96,5 +101,16 @@ describe("Command MOVE", function () {
     });
     expect(y).toBe(0); // expected not to increment since the robot will fall to the table
     expect(x).toBe(0);
+  });
+
+  it("should fail no robot in the table", function () {
+    const robots: Robots = [];
+    const result = makeMove({
+      robotId: "genesis",
+      robots,
+      tableXUnit: DEFAULT_TABLE_X_UNIT,
+      tableYUnit: DEFAULT_TABLE_Y_UNIT,
+    });
+    expect(result[0]).toBe(undefined); // expected undefined no robot in the table
   });
 });

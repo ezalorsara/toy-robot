@@ -1,6 +1,13 @@
 import { FACING, Robots } from "./api";
 import { collisionOrFallingCheck, getPlaceInputObjectValue, rl } from "./utils";
 
+type CommandOptions = {
+  robotId: string;
+  robots: Robots;
+  tableXUnit: number;
+  tableYUnit: number;
+};
+
 const getRobot = (id: string, robots: Robots) => {
   const robot = robots.find((robot) => robot.id === id);
   return robot;
@@ -9,13 +16,7 @@ const getRobot = (id: string, robots: Robots) => {
 /**
  * ----------- Command: PLACE x,y,f --------------
  */
-type MakePlaceOptions = {
-  robotId: string;
-  robots: Robots;
-  input: string;
-  tableXUnit: number;
-  tableYUnit: number;
-};
+type MakePlaceOptions = CommandOptions & { input: string };
 
 export const makePlace = (options: MakePlaceOptions): Robots => {
   const { robotId, robots, input, tableXUnit, tableYUnit } = options;
@@ -69,12 +70,7 @@ export const makePlace = (options: MakePlaceOptions): Robots => {
  * ----------- Command: MOVE --------------
  */
 
-type MakeMoveOptions = {
-  robotId: string;
-  robots: Robots;
-  tableXUnit: number;
-  tableYUnit: number;
-};
+type MakeMoveOptions = CommandOptions;
 
 export const makeMove = (options: MakeMoveOptions) => {
   const { robotId, robots, tableXUnit, tableYUnit } = options;
@@ -134,9 +130,98 @@ export const makeMove = (options: MakeMoveOptions) => {
   return tmpRobots; // seems everything is fine return the updated robots
 };
 
-const makeLeft = () => {};
+/**
+ * ----------- Command: LEFT --------------
+ */
+type MakeLeftOptions = Omit<CommandOptions, "tableXUnit" | "tableYUnit">;
 
-const makeRight = () => {};
+export const makeLeft = (options: MakeLeftOptions) => {
+  const { robotId, robots } = options;
+  const robot = getRobot(robotId, robots);
+  if (typeof robot === "undefined") {
+    rl.write("Ooops please PLACE a Robot first!, please try again\n");
+    return robots;
+  }
+
+  const { f } = robot;
+  let newF = f;
+  switch (f) {
+    case FACING.NORTH:
+      newF = FACING.WEST;
+      break;
+    case FACING.SOUTH:
+      newF = FACING.EAST;
+      break;
+    case FACING.EAST:
+      newF = FACING.NORTH;
+      break;
+    case FACING.WEST:
+      newF = FACING.SOUTH;
+      break;
+  }
+
+  const tmpRobots = [...robots].map((item) => {
+    if (item.id === robot.id) {
+      return {
+        ...item,
+        f: newF,
+      };
+    } else {
+      return item;
+    }
+  });
+
+  return tmpRobots;
+};
+
+/**
+ * ----------- Command: RIGHT --------------
+ */
+
+type MakeRightOptions = Omit<CommandOptions, "tableXUnit" | "tableYUnit">;
+
+export const makeRight = (options: MakeRightOptions) => {
+  const { robotId, robots } = options;
+  const robot = getRobot(robotId, robots);
+  if (typeof robot === "undefined") {
+    rl.write("Ooops please PLACE a Robot first!, please try again\n");
+    return robots;
+  }
+
+  const { f } = robot;
+  let newF = f;
+  switch (f) {
+    case FACING.NORTH:
+      newF = FACING.EAST;
+      break;
+    case FACING.SOUTH:
+      newF = FACING.WEST;
+      break;
+    case FACING.EAST:
+      newF = FACING.SOUTH;
+      break;
+    case FACING.WEST:
+      newF = FACING.NORTH;
+      break;
+  }
+
+  const tmpRobots = [...robots].map((item) => {
+    if (item.id === robot.id) {
+      return {
+        ...item,
+        f: newF,
+      };
+    } else {
+      return item;
+    }
+  });
+
+  return tmpRobots;
+};
+
+/**
+ * ----------- Command: REPORT --------------
+ */
 
 export const makeReport = (robotId: string, robots: Robots) => {
   const robot = getRobot(robotId, robots);
