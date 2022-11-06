@@ -33,7 +33,6 @@ This is use node typescript:
 
 - [Jest](https://jestjs.io/) - JavaScript testing framework!
 - [NODE JS](https://nodejs.org/en/) - open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine and executes JavaScript code outside a web browser, which was designed to build scalable network applications
--
 
 ## Installation
 
