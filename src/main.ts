@@ -4,7 +4,7 @@ import {
   DEFAULT_TABLE_Y_UNIT,
   Robots,
 } from "./api";
-import { makeMove, makePlace, makeReport } from "./robot";
+import { makeLeft, makeMove, makePlace, makeReport, makeRight } from "./robot";
 import {
   getInputCommandEnumValue,
   rl,
@@ -47,8 +47,10 @@ const askCommand = () => {
         });
         break;
       case COMMAND.LEFT:
+        robots = makeLeft({ robotId: activeRobotId, robots: robots });
         break;
       case COMMAND.RIGHT:
+        robots = makeRight({ robotId: activeRobotId, robots: robots });
         break;
       case COMMAND.REPORT:
         makeReport(activeRobotId, robots);
