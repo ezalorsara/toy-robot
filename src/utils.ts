@@ -20,14 +20,20 @@ export const validateInput = (input: string) => {
 };
 
 export const showCommands = () => {
-  rl.write("********** TOY ROBOT ************\n");
-  rl.write("********** LIST COMMAND *********\n");
+  rl.write("************** TOY ROBOT ***************\n");
+  rl.write("********** LIST OF COMMAND *************\n");
   rl.write("PLACE X,Y,F\n");
   rl.write("MOVE\n");
   rl.write("LEFT\n");
   rl.write("RIGHT\n");
   rl.write("REPORT\n");
-  rl.write("*********************************\n\n");
+  rl.write("------ COMMAND PLACE parameters--------\n");
+  rl.write("X is a number\n");
+  rl.write("Y is a number\n");
+  rl.write("F can be NORTH, EAST, SOUTH, WEST\n");
+  rl.write("------------------------------\n");
+  rl.write("****************************************\n\n");
+  rl.write("****************************************\n\n");
 };
 
 export const getInputCommandEnumValue = (validInput: string) => {
@@ -49,12 +55,7 @@ export const getPlaceInputObjectValue = (
     const [x, y, f] = validInput.replace("PLACE ", "").split(",");
     return [{ x: parseInt(x), y: parseInt(y), f: f as FACING }, null];
   } catch (e) {
-    return [
-      null,
-      new Error("Oops unable to get object value", {
-        cause: JSON.stringify(e),
-      }),
-    ];
+    return [null, new Error("Oops unable to get object value")];
   }
 };
 

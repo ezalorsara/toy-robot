@@ -2,7 +2,6 @@ import {
   COMMAND,
   DEFAULT_TABLE_X_UNIT,
   DEFAULT_TABLE_Y_UNIT,
-  FACING,
   Robots,
 } from "./api";
 import {
@@ -16,7 +15,7 @@ import {
 
 /** GLOBAL VAR */
 let activeRobotId = "genesis";
-let robots: Robots = [{ id: activeRobotId, x: 0, y: 0, f: FACING.NORTH }];
+let robots: Robots = [];
 let tableXUnit = DEFAULT_TABLE_X_UNIT;
 let tableYUnit = DEFAULT_TABLE_Y_UNIT;
 
@@ -33,7 +32,7 @@ const askCommand = () => {
 
     switch (getInputCommandEnumValue(input)) {
       case COMMAND.PLACE:
-        doPlace(activeRobotId, input);
+        robots = makePlace({ robotId: activeRobotId, robots, input });
         break;
       case COMMAND.MOVE:
         break;
@@ -42,6 +41,7 @@ const askCommand = () => {
       case COMMAND.RIGHT:
         break;
       case COMMAND.REPORT:
+        makeReport(activeRobotId, robots);
         break;
 
       default:
@@ -56,26 +56,41 @@ const askCommand = () => {
   });
 };
 
-const doPlace = (robotId: string, input: string) => {
-  const [placeValue, error] = getPlaceInputObjectValue(input);
+/**
+ *----------- ROBOT COMMAND ACTIONS -----------------
+ */
+type PlaceOptions = {
+  robotId: string;
+  robots: Robots;
+  input: string;
+};
 
+const makePlace = (options: PlaceOptions): Robots => {
+  const { robotId, robots, input } = options;
+  const [placeValue, error] = getPlaceInputObjectValue(input);
+  let tmpRobots: Robots = []; // Copy of robots where input value is applied and will check for collision or falling
   if (error || placeValue === null) {
     rl.write(`${error?.message ?? "Oops unable to get object value"}\n`);
-    return;
+    return tmpRobots;
   }
 
-  const tmpRobots = robots.map((robot) => {
-    if (robot.id === robotId) {
-      return {
-        ...robot,
-        x: placeValue.x,
-        y: placeValue.y,
-        f: placeValue.f,
-      };
-    }
-
-    return robot;
-  }); // Copy of robots where input value is applied and will check for collision or falling
+  if (robots.length === 0) {
+    tmpRobots = [
+      { id: robotId, x: placeValue.x, y: placeValue.y, f: placeValue.f },
+    ];
+  } else {
+    tmpRobots = robots.map((robot) => {
+      if (robot.id === robotId) {
+        return {
+          ...robot,
+          x: placeValue.x,
+          y: placeValue.y,
+          f: placeValue.f,
+        };
+      }
+      return robot;
+    });
+  }
 
   const result = collisionOrFallingCheck({
     robots: tmpRobots,
@@ -87,19 +102,27 @@ const doPlace = (robotId: string, input: string) => {
     rl.write(
       "Ooops the Robot will collide with another object/robot, please try again\n"
     );
-    return;
   }
 
   if (result === "FALLING") {
     rl.write("Ooops the Robot will fall!, please try again\n");
-    return;
   }
 
-  robots = tmpRobots; // seems everything is fine assign to global robots
+  return tmpRobots; // seems everything is fine return and assign to global robots
 };
 
-const doMove = () => {};
+const makeMove = () => {};
 
-const doReport = () => {};
+export const makeReport = (activeRobotId: string, robots: Robots) => {
+  const robot = robots.find((robot) => robot.id === activeRobotId);
+  if (typeof robot === "undefined") {
+    rl.write("Ooops please PLACE a Robot first!, please try again\n");
+    return;
+  }
+  const { x, y, f } = robot;
+  const output = `Output: ${x},${y},${f}`;
+  rl.write(`${output}\n`);
+  return output;
+};
 
 askCommand();
