@@ -68,8 +68,4 @@ const askCommand = () => {
   });
 };
 
-/**
- *----------- ROBOT COMMAND ACTIONS -----------------
- */
-
-askCommand();
+askCommand(); // run main command
