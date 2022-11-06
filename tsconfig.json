@@ -10,16 +10,8 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@src/": ["src/*"]
-    }
+    "isolatedModules": true
   },
-  "include": [ "**/*.ts"],
-  "exclude": [
-    "node_modules/*",
-    "dist/*",
-    "src/**/*.spec.ts"
-  ]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules/*", "dist/*", "src/**/*.spec.ts"]
 }

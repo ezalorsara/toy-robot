@@ -1,5 +1,5 @@
 import { FACING } from "../api";
-import { makeReport } from "../main";
+import { makeReport } from "../robot";
 
 describe("Command REPORT", function () {
   it("should show proper output makeReport", function () {
