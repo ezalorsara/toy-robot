@@ -38,7 +38,7 @@ This is use node typescript:
 
 This Toy Robot cli game requires [Node.js](https://nodejs.org/) v16+ to run.
 
-- you must have node js v16+ installed in your machine [Don't have install now?](https://nodejs.org/en/download/)
+- you must have node js v16+ installed in your machine [Download link](https://nodejs.org/en/download/)
 - you must have git installed in your machine [How to install git?](https://github.com/git-guides/install-git)
 
 clone the repository
